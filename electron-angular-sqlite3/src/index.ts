@@ -1,10 +1,9 @@
 import { app, BrowserWindow, ipcMain } from 'electron';
 import { enableLiveReload } from 'electron-compile';
 
-import { createConnection } from 'electron-compile';
+import { createConnection } from 'typeorm';
 
 import { Item } from './assets/model/item.schema';
-import { TransitiveCompileNgModuleMetadata } from '@angular/compiler';
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.

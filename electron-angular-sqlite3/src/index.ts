@@ -1,5 +1,10 @@
-import { app, BrowserWindow } from 'electron';
+import { app, BrowserWindow, ipcMain } from 'electron';
 import { enableLiveReload } from 'electron-compile';
+
+import { createConnection } from 'electron-compile';
+
+import { Item } from './assets/model/item.schema';
+import { TransitiveCompileNgModuleMetadata } from '@angular/compiler';
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -10,6 +15,17 @@ const isDevMode = process.execPath.match(/[\\/]electron/);
 if (isDevMode) enableLiveReload();
 
 const createWindow = async () => {
+  const connection = await createConnection({
+    type: 'sqlite',
+    synchronize: true,
+    logging: true,
+    logger: 'simple-console',
+    database: './src/assets/data/database.sqlite',
+    entities: [Item],
+  });
+
+  const itemRepo = connection.getRepository(Item);
+
   // Create the browser window.
   mainWindow = new BrowserWindow({
     width: 800,
@@ -30,6 +46,38 @@ const createWindow = async () => {
     // in an array if your app supports multi windows, this is the time
     // when you should delete the corresponding element.
     mainWindow = null;
+  });
+
+  ipcMain.on('get-items', async(event: any, ...args: any[]) => {
+    try {
+      event.returnValue = await itemRepo.find();
+    } catch (err) {
+      throw err;
+    }
+  });
+
+  ipcMain.on('add-item', async (event: any, _item: Item) => {
+    try {
+      const item = await itemRepo.create(_item);
+
+      await itemRepo.save(item);
+
+      event.returnValue = await itemRepo.find();
+    } catch (err) {
+      throw err;
+    }
+  });
+
+  ipcMain.on('delete-item', async (event: any, _item: Item) => {
+    try {
+      const item = await itemRepo.create(_item);
+
+      await itemRepo.remove(item);
+
+      event.returnValue = await itemRepo.find();
+    } catch (err) {
+      throw err;
+    }
   });
 };
 

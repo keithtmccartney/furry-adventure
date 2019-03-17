@@ -9,7 +9,7 @@ Grab the article at [https://medium.freecodecamp.org/creating-an-electron-app-us
 
 ## What's it all about?
 
-![screen](screen.png)
+![screen](https://raw.githubusercontent.com/keithtmccartney/furry-adventure/master/electron-angular-sqlite3/src/screen.png)
 
 ## Thanks
 

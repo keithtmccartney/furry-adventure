@@ -5,11 +5,11 @@ Grab the article at [https://medium.freecodecamp.org/creating-an-electron-app-us
 
 ## Tips/Run
 
-* Abc...
+* Run `npm install` followed by `npm run start` (ensure that no Python version later than 2.7 is installed);
 
 ## What's it all about?
 
-* Abc...
+![screen](screen.png)
 
 ## Thanks
 
